@@ -14,11 +14,20 @@ class UserController extends Controller
 {
     public function index(): JsonResponse
     {
+        if (auth()->user()->role !== 'admin') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Akses ditolak. Hanya Admin yang dapat melihat daftar user.'
+        ], 403);
+    }    
+    
         $users = User::with(['reviews', 'watchlistMovies'])
-        ->latest();
+        ->latest()
+        ->paginate(10);
 
         return response()->json([
             'success' => true,
+            'message' => 'Daftar user berhasil diambil',
             'data' => $users
         ], 200);
     }

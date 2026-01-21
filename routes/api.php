@@ -19,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
+    Route::get('/users', [UserController::class, 'index']); 
+    Route::get('/users/{id}', [UserController::class, 'show']); 
+
     Route::get('watchlist', [WatchlistController::class, 'index']); 
     Route::post('watchlist', [WatchlistController::class, 'store']); 
     Route::delete('watchlist/{movie_id}', [WatchlistController::class, 'destroy']); 
