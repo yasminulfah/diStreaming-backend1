@@ -34,7 +34,7 @@ class UserController extends Controller
 
     public function show(string $user_id): JsonResponse
     {
-        $user = User::with(['watchlistsMovies', 'reviews'])->find($user_id);
+        $user = User::with(['watchlistMovies', 'reviews'])->find($user_id);
         if (!$user) {
             return response()->json([
                 'success' => false,
