@@ -36,7 +36,7 @@ class WatchlistController extends Controller
 
         $movieId = $request->movie_id;
 
-        if ($user->watchlistMovies()->where('watchlist.movie_id', $movieId)->exists()) {
+        if ($user->watchlistMovies()->where('movies.movie_id', $movieId)->exists()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Movie already in watchlist.'
