@@ -30,29 +30,27 @@ class WatchlistController extends Controller
             'movie_id' => 'required|integer|exists:movies,movie_id',
         ]);
 
-        if (Validator::fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
         $movieId = $request->movie_id;
 
         if ($user->watchlistMovies()->where('watchlist.movie_id', $movieId)->exists()) {
-             return response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => 'Movie already in watchlist.'
             ], 409);
         }
 
-        $user->watchlistMovies()->attach($movieId);
+        $user->watchlistMovies()->syncWithoutDetaching([$movieId]);
 
         return response()->json([
             'success' => true,
             'message' => 'Movie added to watchlist successfully.'
         ], 200);
     }
-
+    
     public function destroy(string $movieId): JsonResponse
     {
         $user = Auth::user();
